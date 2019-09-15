@@ -1,7 +1,6 @@
 import keras
-from keras.datasets import mnist
 from keras.models import Sequential
-from keras.layers import Dense, Dropout
+from keras.layers import Dense
 from keras import regularizers
 from keras import backend as K
 import tensorflow as tf
@@ -31,7 +30,8 @@ model = Sequential([
 
 model.compile(
     loss='binary_crossentropy', 
-    optimizer='adam'
+    optimizer='rmsprop',
+    metrics=['accuracy']
 )
 
 model.fit(
