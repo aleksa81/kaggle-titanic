@@ -3,7 +3,7 @@ import pandas as pd
 
 from titanic import X_train, Y_train, X_test, Y_validate
 
-random_forest = RandomForestClassifier(n_estimators=100)
+random_forest = RandomForestClassifier(n_estimators=101)
 random_forest.fit(X_train, Y_train)
 Y_pred = random_forest.predict(X_test)
 

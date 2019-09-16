@@ -8,29 +8,31 @@ import pandas as pd
 
 from titanic import X_train, Y_train, X_test, Y_validate
 
-batch_size = 6
-epochs = 600
+batch_size = 4
+epochs = 512
 
 model = Sequential([
     keras.layers.Dense(
-        units=53, 
+        units=64, 
         input_shape=(7,), 
-        activation=tf.nn.relu
+        activation=tf.nn.relu,
+        kernel_regularizer=regularizers.l1(0.05)
         ),
     keras.layers.Dense(
-        units=27, 
+        units=32, 
         activation=tf.nn.relu, 
-        kernel_regularizer=regularizers.l2(0.01)
         ),
     keras.layers.Dense(
         units=1, 
-        activation=tf.nn.sigmoid
+        activation=tf.nn.sigmoid,
         )
 ])
 
 model.compile(
     loss='binary_crossentropy', 
-    optimizer='rmsprop',
+    #optimizer='rmsprop',
+    optimizer='sgd',
+    #optimizer='adam',
     metrics=['accuracy']
 )
 

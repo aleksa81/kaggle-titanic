@@ -81,12 +81,23 @@ combine = [train_df, test_df]
 
 for dataset in combine:
     dataset['FamilySize'] = dataset['SibSp'] + dataset['Parch'] + 1
-for dataset in combine:
-    dataset['IsAlone'] = 0
-    dataset.loc[dataset['FamilySize'] == 1, 'IsAlone'] = 1
 
-train_df = train_df.drop(['Parch', 'SibSp', 'FamilySize'], axis=1)
-test_df = test_df.drop(['Parch', 'SibSp', 'FamilySize'], axis=1)
+#for dataset in combine:
+#    dataset['FamilySizeBand'] = pd.cut(dataset['FamilySize'], 5)
+#print(train_df['FamilySizeBand'].unique())
+
+for dataset in combine:
+    dataset.loc[ dataset['FamilySize'] <= 2, 'FamilySize'] = 0
+    dataset.loc[(dataset['FamilySize'] > 2) & (dataset['FamilySize'] <= 3), 'FamilySize'] = 1
+    dataset.loc[(dataset['FamilySize'] > 3) & (dataset['FamilySize'] <= 5), 'FamilySize'] = 2
+    dataset.loc[(dataset['FamilySize'] > 5) & (dataset['FamilySize'] <= 7), 'FamilySize'] = 3
+    dataset.loc[ dataset['FamilySize'] > 7, 'FamilySize'] = 4
+
+#print(train_df['FamilySize'].unique())
+print(train_df[['FamilySize', 'Survived']].groupby(['FamilySize'], as_index=False).mean().sort_values(by='FamilySize', ascending=True))
+
+train_df = train_df.drop(['Parch', 'SibSp'], axis=1)
+test_df = test_df.drop(['Parch', 'SibSp'], axis=1)
 combine = [train_df, test_df]
 
 #print(train_df.head())
@@ -108,6 +119,8 @@ for dataset in combine:
     dataset.loc[(dataset['Fare'] > 14.454) & (dataset['Fare'] <= 31), 'Fare']   = 2
     dataset.loc[ dataset['Fare'] > 31, 'Fare'] = 3
     dataset['Fare'] = dataset['Fare'].astype(int)
+
+print(train_df[['Fare', 'Survived']].groupby(['Fare'], as_index=False).mean().sort_values(by='Fare', ascending=True))
 
 combine = [train_df, test_df]
 #print(len(train_df))
